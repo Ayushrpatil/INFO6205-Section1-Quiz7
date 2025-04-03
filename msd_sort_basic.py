@@ -49,10 +49,26 @@ class MSDSortBasic:
         
         # STUDENT TODO: Implement key-indexed counting sort
         # 1. Count frequency of each character at position d
+        R = self.R
+        count = [0] * (R + 2)  # +1 for -1 (end-of-string), +1 more for inclusive indexing
+
+        for s in arr:
+            c = self._char_at(s, d) + 1  # offset by 1 to allow -1 to fit at index 0
+            count[c + 1] += 1
+
         # 2. Compute cumulative counts to determine positions
+        for r in range(R + 1):
+            count[r + 1] += count[r]
+
         # 3. Distribute strings to auxiliary array
+        for s in arr:
+            c = self._char_at(s, d) + 1
+            aux[count[c]] = s
+            count[c] += 1
+
         # 4. Copy back to original array
-        pass
+        for i in range(n):
+            arr[i] = aux[i]
     
     def is_sorted_by_position(self, arr: List[str], d: int) -> bool:
         """
